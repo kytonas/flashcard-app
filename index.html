@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Verb Flashcard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Home screen -->
+     <section class="screen active" id="home">
+        <h1>English verb flashcard</h1>
+        <button class="primary" id="startBtn">Start</button>
+     </section>
+
+     <!-- Flash card -->
+      <section class="screen" id="flashcard">
+
+        <div class="card" id="card">
+            <h2>RUN</h2>
+            <p class="hint">Klik kartu untuk melihat arti</p>
+        </div>
+
+        <div class="navigation">
+            <button id="prevBtn">Previous</button>
+            <span></span>
+            <button id="nextBtn">Next</button>
+        </div>
+
+        <div class="progress">
+            <div class="progress-bar"></div>
+        </div>
+        <p class="progress-text"></p>
+      </section>
+
+      <!-- Finish screen -->
+    <section class="screen" id="finish">
+        <h2>Selamat!</h2>
+        <p>Kamu sudah menyelesaikan semua flashcard</p>
+        <button class="primary" id="restartBtn">Ulangi</button>
+        <button class="secondary" id="homeBtn">Home</button>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
