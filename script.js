@@ -4,6 +4,30 @@ const startBtn = document.getElementById("startBtn");
 const nextBtn = document.getElementById("nextBtn");
 const restartBtn = document.getElementById("restartBtn");
 const homeBtn = document.getElementById("homeBtn");
+const prevBtn = document.getElementById("prevBtn");
+
+const loadingText = document.getElementById("loadingText");
+startBtn.disabled = true;
+
+
+let flashcards = [];
+let currentIndex = 0;
+
+
+const endpoint = "https://pabcl.codelabspace.or.id/flashcards";
+
+fetch(endpoint)
+    .then(res => res.json())
+    .then(result => {
+        flashcards = result.data;
+        startBtn.disabled = false;
+        loadingText.textContent = "Flashcard siap!";
+        console.log("Data dari API:", flashcards);
+    })
+    .catch(error => {
+        console.error("Gagal fetch data:", error);
+    });
+
 
 function showScreen(screenId) {
     screens.forEach(screen => {
@@ -15,9 +39,8 @@ function showScreen(screenId) {
 
 startBtn.addEventListener("click", () => {
     currentIndex = 0;
-    showAnswer = false;
     renderCard();
-    showScreen("flashcard")
+    showScreen("flashcard");
 });
 
 nextBtn.addEventListener("click", () => {
@@ -46,15 +69,11 @@ homeBtn.addEventListener("click", () => {
     showScreen("home")
 });
 
-const flashcards = [
-    { question: "RUN", answer: "BERLARI" },
-    { question: "EAT", answer: "MAKAN" },
-    { question: "SLEEP", answer: "TIDUR" },
-    { question: "DRINK", answer: "MINUM" }
-];
 
-const cardTitle = document.querySelector(".card h2");
-const hintText = document.querySelector(".hint");
+const questionText = document.getElementById("questionText");
+const answerText = document.getElementById("answerText");
+const hintTextFront = document.querySelector(".card-front .hint");
+const hintTextBack = document.querySelector(".card-back .hint");
 const counterText = document.querySelector(".navigation span");
 const progressBar = document.querySelector(".progress-bar");
 const progressText = document.querySelector(".progress-text");
@@ -63,26 +82,30 @@ const progressText = document.querySelector(".progress-text");
 function renderCard() {
     const currentCard = flashcards[currentIndex];
 
-    if (showAnswer) {
-        cardTitle.textContent = currentCard.answer;
-        hintText.textContent = "Klik kartu untuk melihat kata";
-    } else {
-        cardTitle.textContent = currentCard.question;
-        hintText.textContent = "Klik kartu untuk melihat arti";
-    }
+    questionText.textContent = currentCard.question;
+    answerText.textContent = currentCard.answer;
+
+    hintTextFront.textContent = "Klik kartu untuk melihat arti";
+    hintTextBack.textContent = "Klik kartu untuk melihat kata";
 
     counterText.textContent = `${currentIndex + 1} / ${flashcards.length}`;
 
     const progressPercent = ((currentIndex + 1) / flashcards.length) * 100;
     progressBar.style.width = progressPercent + "%";
 
-    progressText.textContent = `Kamu sudah belajar ${currentIndex + 1} dari ${flashcards.length} kata`;
+    progressText.textContent =
+        `Kamu sudah belajar ${currentIndex + 1} dari ${flashcards.length} kata`;
+
+    card.classList.remove("flip");
+
+    prevBtn.disabled = currentIndex === 0;
+
 }
+
 
 const card = document.getElementById("card");
 card.addEventListener("click", () => {
-    showAnswer = !showAnswer;
-    renderCard();
+    card.classList.toggle("flip");
 });
 
 
